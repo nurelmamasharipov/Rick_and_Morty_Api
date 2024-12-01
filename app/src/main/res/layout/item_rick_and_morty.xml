@@ -5,15 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:backgroundTint="#3c3e44"
     android:background="@drawable/item_bg"
-    android:layout_height="160dp">
+    android:layout_height="160dp"
+    android:layout_marginBottom="20dp">
 
     <ImageView
-        android:layout_width="160dp"
+        android:layout_width="150dp"
         android:layout_height="160dp"
         android:background="@drawable/item_bg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:foreground="@drawable/image_bg"
         android:clipToOutline="true"
         android:id="@+id/iv_avatar"/>
 
@@ -82,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Vindicators 3: The Return of Worldender"
-        android:textSize="13sp"
+        android:textSize="12sp"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="@id/tv_name"
         app:layout_constraintTop_toBottomOf="@id/tv_firstSeen"

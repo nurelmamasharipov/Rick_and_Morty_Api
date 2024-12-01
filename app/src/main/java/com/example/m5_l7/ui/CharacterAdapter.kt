@@ -1,6 +1,7 @@
 package com.example.m5_l7.ui
 
 import android.content.ClipData.Item
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -12,6 +13,7 @@ import com.example.m5_l7.databinding.ItemRickAndMortyBinding
 
 class CharacterAdapter : PagingDataAdapter<Character, CharacterAdapter.CharacterViewHolder>(CharacterDiffCallback()) {
 
+    private var onItemClickListener: ((Character) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
         val binding = ItemRickAndMortyBinding.inflate(
@@ -19,7 +21,7 @@ class CharacterAdapter : PagingDataAdapter<Character, CharacterAdapter.Character
             parent,
             false
         )
-        return CharacterViewHolder(binding)
+        return CharacterViewHolder(binding, onItemClickListener)
     }
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
@@ -27,22 +29,31 @@ class CharacterAdapter : PagingDataAdapter<Character, CharacterAdapter.Character
         character?.let { holder.bind(it) }
     }
 
-    class CharacterViewHolder(private val binding: ItemRickAndMortyBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class CharacterViewHolder(
+        private val binding: ItemRickAndMortyBinding,
+        private val onItemClickListener: ((Character) -> Unit)?
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(character: Character) {
             binding.apply {
                 tvName.text = character.name
                 tvIsAlive.text = "${character.status} - ${character.species}"
                 tvLocation.text = character.location?.name ?: "??"
-                tvFirstPlace.text = character.location?.name ?: "??"
-
+                tvFirstPlace.text = character.origin?.name ?: "??"
 
                 Glide.with(ivAvatar.context)
                     .load(character.image)
                     .into(ivAvatar)
+
+                itemView.setOnClickListener {
+                    onItemClickListener?.invoke(character)
+                }
             }
         }
+    }
+
+    fun setOnItemClickListener(listener: (Character) -> Unit) {
+        onItemClickListener = listener
     }
 
     class CharacterDiffCallback : DiffUtil.ItemCallback<Character>() {
@@ -55,3 +66,5 @@ class CharacterAdapter : PagingDataAdapter<Character, CharacterAdapter.Character
         }
     }
 }
+
+

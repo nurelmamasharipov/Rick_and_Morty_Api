@@ -6,19 +6,26 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
+import com.example.m5_l7.data.CharacterRepository
 import com.example.m5_l7.data.models.Character
-import com.example.m5_l7.paging.PagingSource
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val repository: CharacterRepository
+) : ViewModel() {
 
-    fun getCharacters(): LiveData<PagingData<Character>>{
+    fun getCharacters(): LiveData<PagingData<Character>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
                 prefetchDistance = 30,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = {PagingSource()}
+            pagingSourceFactory = { repository.getPagingSource() }
         ).liveData
     }
 }
+
+
